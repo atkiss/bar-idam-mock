@@ -1,4 +1,5 @@
 import http from 'http';
+import https from 'https';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -7,10 +8,15 @@ import middleware from './middleware';
 import details from './api/details';
 import config from './config.json';
 import fs from 'fs';
+import path from 'path'
 
+const options = {
+  key: fs.readFileSync('./server.key'),
+  cert: fs.readFileSync('./server.cert')
+};
 
 let app = express();
-let server = http.createServer(app);
+let server = http.createServer(options, app);
 app.server = server;
 
 // logger
@@ -23,6 +29,13 @@ app.use(cors({
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+const caching = {cacheControl: true, setHeaders: (res) => res.setHeader('Cache-Control', 'max-age=604800')};
+const webchatPath = path.join(__dirname, '../node_modules/@hmcts/ctsc-web-chat/assets');
+app.use('/public/webchat', express.static(webchatPath, caching));
+
+const webchatHtml = path.join(__dirname, '../resources/webchat.html')
+app.use('/web', (req, resp) => resp.sendFile(webchatHtml));
 
 // connect to db
 initializeDb( db => {

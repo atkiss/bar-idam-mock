@@ -15,6 +15,9 @@ export default ({ config, db }) => {
     if (token === 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjbWMiLCJleHAiOjE1MzMyMzc3NjN9.3iwg2cCa1_G9-TAMupqsQsIVBMWg9ORGir5xZyPhDabk09Ldk0-oQgDQq735TjDQzPI8AxL1PgjtOPDKeKyxfg[akiss@reformMgmtDevBastion02') {
       res.status(200).send('ccpay_bubble');
       return;
+    } else if (token === 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjdHNjX3dvcmtfYWxsb2NhdGlvbiIsImV4cCI6MTU3MDAyNjE3Nn0.Y7u9WqS9R_P-ckt1ccYzJ_k5nrF7B6LXZDYT6LCalsxMUfgODdLvtDfDwuINRyvT3zYE2P2-EXI9bbdqjvzfaw') {
+      res.status(200).send('divorce');
+      return;
     }
     const user = db.find(token);
     console.log('user: ' + user);
@@ -151,12 +154,22 @@ export default ({ config, db }) => {
     res.status(status).send();
   });
 
-  api.post('/searchCases**', (req, res) => {
-    fs.readFile('./resources/ccd_search_result.json', function (err, data) {
-      if (err) throw err;
-      let resp = JSON.parse(data);
-      res.json(resp);
-    });
+  api.post('/searchCases', (req, res) => {
+    setTimeout(() => {
+      let fileName = "";
+      if (req.query.ctid === 'GrantOfRepresentation') {
+        fileName = 'ccd_probate_search_result.json';
+      } else if (req.query.ctid === 'MoneyClaimCase') {
+        fileName = 'ccd_cmc_search_result.json';
+      } else {
+        fileName = 'ccd_search_result.json';
+      }
+      fs.readFile(`./resources/${fileName}`, function (err, data) {
+        if (err) throw err;
+        let resp = JSON.parse(data);
+        res.json(resp);
+      });
+    }, 10000);
   });
 
   return api;

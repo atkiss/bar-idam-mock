@@ -1,0 +1,21 @@
+{
+  "total": 1,
+  "cases":[{
+    "id": 1579184835122053,
+    "jurisdiction": "CMC",
+    "state": "readyForTransfer",
+    "version": null,
+    "case_type_id": null,
+    "created_date": null,
+    "last_modified": "2020-01-16T14:28:57.032",
+    "security_classification": null,
+    "case_data": null,
+    "data_classification": null,
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": null
+  }]
+}
